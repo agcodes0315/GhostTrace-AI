@@ -6,4 +6,8 @@ __pycache__/
 dataset/
 *.zip
 *.log
+audit_*/
+_final_extract/
 _submission_archive/
+emergency_unverified.json
+ghosttrace_*.json

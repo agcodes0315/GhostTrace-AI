@@ -358,7 +358,12 @@ def audit_case(case,identity,store,rules):
     if review: return None,review
     status='INCOMPLETE' if issues else 'COMPLETE'
     if status=='INCOMPLETE':
-        steps=[s for s in steps if s['phase']!='VERIFICATION' or (s['system_id'],s['resource_id']) in issues]
+        # Retain verification of already-compliant resources in the final plan.
+        # For INCOMPLETE cases, every verification is a prospective check and
+        # must not cite evidence as though the final remediation happened.
+        for step in steps:
+            if step['phase']=='VERIFICATION':
+                step['evidence_id']=''
     else:
         steps=[s for s in steps if s['phase']=='VERIFICATION']
     return {'case_id':case['case_id'],'deletion_status':status,'steps_json':canonicalize(steps)},[]
