@@ -155,6 +155,9 @@ class EvidenceStore:
                 if suffix=='.json':
                     obj=json.loads(path.read_text(encoding='utf-8-sig'))
                     for row in json_records(obj): self._add(row,fid,when)
+                    if isinstance(obj,dict) and isinstance(obj.get('snapshots'),list):
+                        from snapshot_records import extract_snapshot_records
+                        for row in extract_snapshot_records(obj): self._add(row,fid,when)
                     if isinstance(obj,dict) and isinstance(obj.get('service_exports'),dict):
                         from service_readbacks import extract_service_exports
                         for row in extract_service_exports(obj):
