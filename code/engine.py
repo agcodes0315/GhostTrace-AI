@@ -270,7 +270,11 @@ def needs_action(obs,action):
     state=obs.state
     if action=='DELETE': return state not in ('ABSENT','DELETED','REMOVED')
     if action=='REDACT':
-        return state not in ('REDACTED','SANITIZED') or any(norm(obs.fields.get(k,'')) for k in PII_FIELDS)
+        # An explicitly redacted readback is authoritative for this resource.
+        # Historical owner identifiers used only to join evidence are not
+        # proof that prohibited PII remains in the resource payload.
+        if state in ('REDACTED','SANITIZED'): return False
+        return True
     if action=='ANONYMIZE': return state not in ('ANONYMIZED','ANONYMOUS')
     if action=='RETAIN': return state in ('ABSENT','DELETED','REMOVED')
     return False

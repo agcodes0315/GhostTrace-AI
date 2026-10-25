@@ -35,7 +35,10 @@ def extract_snapshot_records(document):
             if collection=='operational_record_history':
                 row['state']=record.get('result') or ''
             elif collection=='deleted_customer_references':
-                row['state']='ABSENT' if str(record.get('account_status','')).upper()=='DELETED' else ''
+                if str(record.get('account_status','')).upper()!='DELETED': continue
+                row['data_category']='ACCOUNT_TOMBSTONE'
+                direct=('name','email','phone','email_hash','first_name','last_name','full_name','address')
+                row['state']='PRESENT' if any(record.get(k) not in (None,'') for k in direct) else 'REDACTED'
             elif collection=='customer_profiles':
                 row['state']='PRESENT' if record.get('account_status')=='ACTIVE' else ''
             elif collection=='backup_catalog' and isinstance(record.get('restore_allowed'),bool):
