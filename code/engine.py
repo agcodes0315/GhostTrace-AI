@@ -174,9 +174,17 @@ class EvidenceStore:
                             for values in cur.fetchall():
                                 row=dict(zip(names, values)); row.setdefault('system_id',manifest.get('system_id',''))
                                 row.setdefault('data_category',manifest.get('data_category',''))
-                                self._add(row,fid,when,fallback_system=manifest.get('system_id',''))
+                                from sql_snapshot_evidence import extract_sql_row
+                                typed = extract_sql_row(row)
+                                if typed is not None:
+                                    self._add(typed,fid,when)
+                                else:
+                                    self._add(row,fid,when,fallback_system=manifest.get('system_id',''))
                     finally: db.close()
                 elif suffix in ('.log','.txt'):
+                    from typed_text_readbacks import extract_readbacks
+                    for row in extract_readbacks(path):
+                        self._add(row,fid,when)
                     if suffix=='.log':
                         from log_evidence import extract
                         for row in extract(path):

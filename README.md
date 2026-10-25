@@ -1,4 +1,4 @@
-> **October 25 consolidated build:** 46 unit tests passed; 293 strict provisional classifications, 225 unverified fallbacks; full public-sample fallback status accuracy 22/32, exact-step accuracy 0/32. See `evaluation/evaluation_report.md` for limitations.
+> **October 25 consolidated build:** 49 unit tests passed; 293 strict provisional classifications, 225 unverified fallbacks; full public-sample fallback status accuracy 22/32, exact-step accuracy 0/32. See `evaluation/evaluation_report.md` for limitations.
 
 # GhostTrace AI — HackerRank Orchestrate October 2026
 
@@ -20,7 +20,7 @@ Python 3.12+ recommended. No external API keys are required for the deterministi
 
 ### Important limitations
 
-- The emergency fallback is not a fully evidence-backed deletion audit. In the supplied dataset run, 373 cases remained unresolved.
+- The emergency fallback is not a fully evidence-backed deletion audit. In the supplied dataset run, 225 cases remained unresolved in the latest measured run.
 - PDF and PNG evidence is not integrated into deterministic claims; the parser reports warnings instead of fabricating evidence.
 - Search/sync/restore risk correlation and category-specific policy completeness need further work.
 - `reported_status` is never treated as proof of deletion.
